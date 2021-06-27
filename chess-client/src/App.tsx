@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import "./App.css";
 import Chessboard from "chessboardjsx";
 import { ChessInstance, ShortMove } from "chess.js";
+import { Button } from "react-bootstrap";
 
 const Chess = require("chess.js");
 
 const App: React.FC = () => {
   const [chess] = useState<ChessInstance>(
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-  );
+  )
 
   const [fen, setFen] = useState(chess.fen());
 
@@ -17,16 +18,22 @@ const App: React.FC = () => {
       setTimeout(() => {
         const moves = chess.moves();
 
-        // if (moves.length > 0) {
-        //   const computerMove = moves[Math.floor(Math.random() * moves.length)];
-        //   // chess.move(computerMove);
-        //   // setFen(chess.fen());
-        // }
+        if (moves.length > 0) {
+          const computerMove = moves[Math.floor(Math.random() * moves.length)];
+          chess.move(computerMove);
+          setFen(chess.fen());
+        }
       }, 300);
 
       setFen(chess.fen());
     }
-  };
+  }
+
+  const handleReset = () => {
+    console.log('cb')
+    chess.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    setFen(chess.fen())
+  }
 
   return (
     <div className="flex-center">
@@ -42,6 +49,7 @@ const App: React.FC = () => {
           })
         }
       />
+      <Button onClick={handleReset}>Reiniciar</Button>
     </div>
   );
 };
