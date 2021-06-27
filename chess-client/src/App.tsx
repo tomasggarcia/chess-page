@@ -1,57 +1,32 @@
-import React, { useState } from "react";
+import { Route, RouteComponentProps, Switch } from "react-router-dom";
+import routes from "./config/routes";
 import "./App.css";
-import Chessboard from "chessboardjsx";
-import { ChessInstance, ShortMove } from "chess.js";
-import { Button } from "react-bootstrap";
 
-const Chess = require("chess.js");
+function App() {
+    return (
+      <div style={{ minHeight: "80vh" }}>
+      <Switch>
+          {routes.map((route, index) => {
+              return (
+                  <Route
+                      key={index}
+                      path={route.path}
+                      exact={route.exact}
+                      render={(
+                          props: RouteComponentProps<any>
+                      ) => (
+                          <route.component
+                              name={route.name}
+                              {...props}
+                              {...route.props}
+                          />
+                      )}
+                  />
+              );
+          })}
+      </Switch>
+  </div>
+    )
+}
 
-const App: React.FC = () => {
-  const [chess] = useState<ChessInstance>(
-    new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-  )
-
-  const [fen, setFen] = useState(chess.fen());
-
-  const handleMove = (move: ShortMove) => {
-    if (chess.move(move)) {
-      setTimeout(() => {
-        const moves = chess.moves();
-
-        if (moves.length > 0) {
-          const computerMove = moves[Math.floor(Math.random() * moves.length)];
-          chess.move(computerMove);
-          setFen(chess.fen());
-        }
-      }, 300);
-
-      setFen(chess.fen());
-    }
-  }
-
-  const handleReset = () => {
-    console.log('cb')
-    chess.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-    setFen(chess.fen())
-  }
-
-  return (
-    <div className="flex-center">
-      <h1>Random Chess</h1>
-      <Chessboard
-        width={400}
-        position={fen}
-        onDrop={(move) =>
-          handleMove({
-            from: move.sourceSquare,
-            to: move.targetSquare,
-            promotion: "q",
-          })
-        }
-      />
-      <Button onClick={handleReset}>Reiniciar</Button>
-    </div>
-  );
-};
-
-export default App;
+export default App
