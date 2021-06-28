@@ -1,11 +1,12 @@
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import routes from "./config/routes";
 import "./App.css";
+import { Navbar } from "react-bootstrap";
 
 function App() {
     return (
       <div style={{ minHeight: "80vh" }}>
-      <Switch>
+      {/* <Switch> */}
           {routes.map((route, index) => {
               return (
                   <Route
@@ -24,7 +25,7 @@ function App() {
                   />
               );
           })}
-      </Switch>
+      {/* </Switch> */}
   </div>
     )
 }

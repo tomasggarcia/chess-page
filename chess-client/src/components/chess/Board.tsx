@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-
 import Chessboard from "chessboardjsx";
 import { ChessInstance, ShortMove } from "chess.js";
-import { Button } from "react-bootstrap";
+import { Button, Col, Container } from "react-bootstrap";
+import './Board.css'
+import Timer from "../Timer/Timer";
 
 const Chess = require("chess.js");
 
@@ -29,28 +30,43 @@ const Board: React.FC = () => {
     }
   }
 
+
   const handleReset = () => {
     console.log('cb')
     chess.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     setFen(chess.fen())
+
+    Timer()
+
   }
 
   return (
-    <div className="flex-center">
-      <h1>Random Chess</h1>
-      <Chessboard
-        width={400}
-        position={fen}
-        onDrop={(move) =>
-          handleMove({
-            from: move.sourceSquare,
-            to: move.targetSquare,
-            promotion: "q",
-          })
-        }
-      />
-      <Button onClick={handleReset}>Reiniciar</Button>
-    </div>
+    <Container className='d-flex justify-content-center border shadow'>
+      <Col>
+      <Timer></Timer>
+      </Col>
+      <Col>
+        <h1>Random Chess</h1>
+        <Chessboard
+          width={400}
+          position={fen}
+          onDrop={(move) =>
+            handleMove({
+              from: move.sourceSquare,
+              to: move.targetSquare,
+              promotion: "q",
+            })
+          }
+        />
+
+      </Col>
+      <Col>
+        <Container className='rounded mt-5 h-75' id='column2Conteiner'>
+        <Button onClick={handleReset}>Reiniciar</Button>
+
+        </Container>
+      </Col>
+    </Container>
   );
 };
 
