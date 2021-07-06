@@ -13,6 +13,7 @@ const Board: React.FC = () => {
         new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     );
 
+    const [orientation, setOrientation] = useState("white");
     const [timeSelected, setTimeSelected] = useState(false);
 
     const [additionalTime, setAdditionalTime] = useState(0);
@@ -24,6 +25,14 @@ const Board: React.FC = () => {
 
     const [timerB, setTimerB] = useState(initialTime);
     const incrementB = useRef<any>();
+
+    function handleFlip() {
+        if (orientation == "white") {
+            setOrientation("black");
+        } else {
+            setOrientation("white");
+        }
+    }
 
     //COMPUTER MOVES HANDLING
     const handleMove = (move: ShortMove) => {
@@ -163,11 +172,13 @@ const Board: React.FC = () => {
                                     promotion: "q",
                                 })
                             }
+                            orientation={orientation}
                         />
                     </div>
                     <div className="reset">
                         <p>{turn} to move</p>
                         <Button onClick={handleReset}>Reiniciar</Button>
+                        <Button onClick={handleFlip}>Flip</Button>
                     </div>
                     <div className="timer-white">
                         <p>{formatTimeW()}</p>
