@@ -27,16 +27,27 @@ const Board: React.FC = () => {
     const incrementB = useRef<any>();
 
     function handleFlip() {
-        if (orientation == "white") {
+        if (orientation === "white") {
             setOrientation("black");
         } else {
             setOrientation("white");
         }
     }
 
+    function promotionHandler(move: any) {
+        if (
+            (move.targetSquare[1] === "8" && move.piece === "wP") ||
+            (move.targetSquare[1] === "1" && move.piece === "bP")
+        ) {
+            const promotion = window.prompt("choose");
+            return promotion;
+        }
+    }
+
     //COMPUTER MOVES HANDLING
     const handleMove = (move: ShortMove) => {
         if (chess.move(move)) {
+            console.log(move);
             if (turn === "white") {
                 setTimerW(timerW + additionalTime);
                 handleBlackStart();
@@ -169,7 +180,8 @@ const Board: React.FC = () => {
                                 handleMove({
                                     from: move.sourceSquare,
                                     to: move.targetSquare,
-                                    promotion: "q",
+                                    promotion: promotionHandler(move),
+                                    piece: move.piece,
                                 })
                             }
                             orientation={orientation}
